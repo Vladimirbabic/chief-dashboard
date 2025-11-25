@@ -203,7 +203,8 @@ export function ChiefChat({ onBack, initialMessage, contextType, contextData }: 
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-8 space-y-8">
+        <div className="flex-1 overflow-y-auto p-8">
+          <div className="max-w-4xl mx-auto space-y-8">
            {/* Context Bubble if starting from an artifact */}
            {initialMessage && (
              <div className="flex justify-end mb-8">
@@ -244,6 +245,7 @@ export function ChiefChat({ onBack, initialMessage, contextType, contextData }: 
              </div>
            ))}
            <div className="h-24"></div>
+          </div>
         </div>
 
         {/* Input Area */}
