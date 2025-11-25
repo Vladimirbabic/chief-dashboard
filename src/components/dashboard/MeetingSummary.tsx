@@ -17,12 +17,20 @@ import Image from "next/image";
 interface MeetingSummaryProps {
   onBack: () => void;
   isPanel?: boolean;
+  onChatStart?: (message: string) => void;
 }
 
-export function MeetingSummary({ onBack, isPanel = false }: MeetingSummaryProps) {
+export function MeetingSummary({ onBack, isPanel = false, onChatStart }: MeetingSummaryProps) {
   const [showSummaryTemplates, setShowSummaryTemplates] = useState(false);
   const [showEmailTemplates, setShowEmailTemplates] = useState(false);
   const [activeTab, setActiveTab] = useState<'transcript' | 'followup' | 'updates'>('transcript');
+  const [chatInput, setChatInput] = useState("");
+  
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && chatInput.trim() && onChatStart) {
+      onChatStart(chatInput);
+    }
+  };
   
   const [isRegeneratingSummary, setIsRegeneratingSummary] = useState(false);
   const [isRegeneratingEmail, setIsRegeneratingEmail] = useState(false);
@@ -551,6 +559,9 @@ export function MeetingSummary({ onBack, isPanel = false }: MeetingSummaryProps)
                 type="text" 
                 placeholder="Ask Chief about this call" 
                 className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
             </div>
           </div>

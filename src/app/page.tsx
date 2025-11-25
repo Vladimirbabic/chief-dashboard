@@ -28,22 +28,41 @@ import { InsightDetail } from "@/components/dashboard/InsightDetail";
 import { MeetingSummary } from "@/components/dashboard/MeetingSummary";
 import { PreMeetingPrep } from "@/components/dashboard/PreMeetingPrep";
 import { RevenueGrowthInsight } from "@/components/dashboard/RevenueGrowthInsight";
+import { ChiefChat } from "@/components/dashboard/ChiefChat";
 
 export default function DashboardPage() {
   const [selectedInsight, setSelectedInsight] = useState<string | null>(null);
+  const [chatContext, setChatContext] = useState<{type: 'insight' | 'meeting' | 'prep', initialMessage: string} | null>(null);
+
+  const handleChatStart = (type: 'insight' | 'meeting' | 'prep', message: string) => {
+    setChatContext({ type, initialMessage: message });
+    setSelectedInsight('chat');
+  };
 
   const renderContent = () => {
+    if (selectedInsight === 'chat' && chatContext) {
+      return (
+        <ChiefChat 
+          onBack={() => {
+            setSelectedInsight(null);
+            setChatContext(null);
+          }}
+          initialMessage={chatContext.initialMessage}
+          contextType={chatContext.type}
+        />
+      );
+    }
     if (selectedInsight === 'email') {
-      return <InsightDetail onBack={() => setSelectedInsight(null)} />;
+      return <InsightDetail onBack={() => setSelectedInsight(null)} onChatStart={(msg) => handleChatStart('insight', msg)} />;
     }
     if (selectedInsight === 'revenue-growth') {
-      return <RevenueGrowthInsight onBack={() => setSelectedInsight(null)} />;
+      return <RevenueGrowthInsight onBack={() => setSelectedInsight(null)} onChatStart={(msg) => handleChatStart('insight', msg)} />;
     }
     if (selectedInsight === 'meeting') {
-      return <MeetingSummary onBack={() => setSelectedInsight(null)} />;
+      return <MeetingSummary onBack={() => setSelectedInsight(null)} onChatStart={(msg) => handleChatStart('meeting', msg)} />;
     }
     if (selectedInsight === 'pre-meeting') {
-      return <PreMeetingPrep onBack={() => setSelectedInsight(null)} />;
+      return <PreMeetingPrep onBack={() => setSelectedInsight(null)} onChatStart={(msg) => handleChatStart('prep', msg)} />;
     }
     
     return (

@@ -16,9 +16,17 @@ import Image from "next/image";
 
 interface RevenueGrowthInsightProps {
   onBack: () => void;
+  onChatStart?: (message: string) => void;
 }
 
-export function RevenueGrowthInsight({ onBack }: RevenueGrowthInsightProps) {
+export function RevenueGrowthInsight({ onBack, onChatStart }: RevenueGrowthInsightProps) {
+  const [chatInput, setChatInput] = useState("");
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && chatInput.trim() && onChatStart) {
+      onChatStart(chatInput);
+    }
+  };
   return (
     <div className="flex h-full w-full overflow-hidden bg-[#F2F6F7] p-3 relative">
       {/* Main Content Panel */}
@@ -302,6 +310,9 @@ export function RevenueGrowthInsight({ onBack }: RevenueGrowthInsightProps) {
                   type="text" 
                   placeholder="Ask Chief about this insight" 
                   className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
             </div>

@@ -16,10 +16,18 @@ import Image from "next/image";
 
 interface InsightDetailProps {
   onBack: () => void;
+  onChatStart?: (message: string) => void;
 }
 
-export function InsightDetail({ onBack }: InsightDetailProps) {
+export function InsightDetail({ onBack, onChatStart }: InsightDetailProps) {
   const [showReasoning, setShowReasoning] = useState(false);
+  const [chatInput, setChatInput] = useState("");
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && chatInput.trim() && onChatStart) {
+      onChatStart(chatInput);
+    }
+  };
 
   return (
     <div className="flex h-full w-full overflow-hidden bg-[#F2F6F7] p-3 relative">
@@ -127,6 +135,9 @@ export function InsightDetail({ onBack }: InsightDetailProps) {
                   type="text" 
                   placeholder="Send message to chief." 
                   className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
             </div>

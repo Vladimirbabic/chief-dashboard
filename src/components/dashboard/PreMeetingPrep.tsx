@@ -18,10 +18,18 @@ import Image from "next/image";
 
 interface PreMeetingPrepProps {
   onBack: () => void;
+  onChatStart?: (message: string) => void;
 }
 
-export function PreMeetingPrep({ onBack }: PreMeetingPrepProps) {
+export function PreMeetingPrep({ onBack, onChatStart }: PreMeetingPrepProps) {
   const [showSummary, setShowSummary] = useState(false);
+  const [chatInput, setChatInput] = useState("");
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && chatInput.trim() && onChatStart) {
+      onChatStart(chatInput);
+    }
+  };
 
   return (
     <div className="flex h-full w-full overflow-hidden bg-[#F2F6F7] p-3 relative">
@@ -222,6 +230,9 @@ export function PreMeetingPrep({ onBack }: PreMeetingPrepProps) {
                   type="text" 
                   placeholder="Ask Chief about this meeting" 
                   className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
             </div>
