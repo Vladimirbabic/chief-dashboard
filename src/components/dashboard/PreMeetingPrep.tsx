@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { MeetingSummary } from "./MeetingSummary";
+import { ChiefChatPopup } from "./ChiefChatPopup";
 import { 
   ChevronLeft, 
   Video, 
@@ -24,10 +25,21 @@ interface PreMeetingPrepProps {
 export function PreMeetingPrep({ onBack, onChatStart }: PreMeetingPrepProps) {
   const [showSummary, setShowSummary] = useState(false);
   const [chatInput, setChatInput] = useState("");
+  const [showChatPopup, setShowChatPopup] = useState(false);
+  const [initialChatMessage, setInitialChatMessage] = useState("");
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && chatInput.trim() && onChatStart) {
-      onChatStart(chatInput);
+    if (e.key === 'Enter' && chatInput.trim()) {
+      setInitialChatMessage(chatInput);
+      setShowChatPopup(true);
+      setChatInput("");
+    }
+  };
+
+  const handleViewFullChat = () => {
+    setShowChatPopup(false);
+    if (onChatStart) {
+      onChatStart(initialChatMessage);
     }
   };
 
@@ -215,35 +227,46 @@ export function PreMeetingPrep({ onBack, onChatStart }: PreMeetingPrepProps) {
         </div>
 
         {/* Bottom Input - Sticky */}
-        <div className={`absolute bottom-0 left-0 px-8 py-4 bg-gradient-to-t from-white via-white to-transparent z-10 ${showSummary ? 'w-[35%]' : 'w-full'}`}>
-          <div className="max-w-3xl mx-auto">
-            <div className="flex gap-4">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>ME</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 rounded-xl border border-[#E6EBEC] p-3 bg-white shadow-sm">
-                <div className="mb-1 text-xs font-medium text-gray-500">
-                  Ask: <span className="text-gray-900">Chief</span>
+        {!showChatPopup && (
+          <div className={`absolute bottom-0 left-0 px-8 py-4 bg-gradient-to-t from-white via-white to-transparent z-10 ${showSummary ? 'w-[35%]' : 'w-full'}`}>
+            <div className="max-w-3xl mx-auto">
+              <div className="flex gap-4">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>ME</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 rounded-xl border border-[#E6EBEC] p-3 bg-white shadow-sm">
+                  <div className="mb-1 text-xs font-medium text-gray-500">
+                    Ask: <span className="text-gray-900">Chief</span>
+                  </div>
+                  <input 
+                    type="text" 
+                    placeholder="Ask Chief about this meeting" 
+                    className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                  />
                 </div>
-                <input 
-                  type="text" 
-                  placeholder="Ask Chief about this meeting" 
-                  className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
+              </div>
+              <div className="mt-2 text-center">
+                <p className="text-[10px] text-gray-400 flex items-center justify-center gap-1">
+                  <Sparkles className="h-2.5 w-2.5" />
+                  Chief pulled most recent data at 1:23 am Yesterday.
+                </p>
               </div>
             </div>
-            <div className="mt-2 text-center">
-              <p className="text-[10px] text-gray-400 flex items-center justify-center gap-1">
-                <Sparkles className="h-2.5 w-2.5" />
-                Chief pulled most recent data at 1:23 am Yesterday.
-              </p>
-            </div>
           </div>
-        </div>
+        )}
+
+        {/* Chat Popup */}
+        <ChiefChatPopup 
+          isOpen={showChatPopup}
+          onClose={() => setShowChatPopup(false)}
+          onViewFullChat={handleViewFullChat}
+          initialMessage={initialChatMessage}
+          contextTitle="this meeting prep"
+        />
       </div>
       
       {/* Summary Panel - Slides in from right */}

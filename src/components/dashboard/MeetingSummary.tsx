@@ -13,6 +13,7 @@ import {
   Send
 } from "lucide-react";
 import Image from "next/image";
+import { ChiefChatPopup } from "./ChiefChatPopup";
 
 interface MeetingSummaryProps {
   onBack: () => void;
@@ -25,10 +26,21 @@ export function MeetingSummary({ onBack, isPanel = false, onChatStart }: Meeting
   const [showEmailTemplates, setShowEmailTemplates] = useState(false);
   const [activeTab, setActiveTab] = useState<'transcript' | 'followup' | 'updates'>('transcript');
   const [chatInput, setChatInput] = useState("");
+  const [showChatPopup, setShowChatPopup] = useState(false);
+  const [initialChatMessage, setInitialChatMessage] = useState("");
   
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && chatInput.trim() && onChatStart) {
-      onChatStart(chatInput);
+    if (e.key === 'Enter' && chatInput.trim()) {
+      setInitialChatMessage(chatInput);
+      setShowChatPopup(true);
+      setChatInput("");
+    }
+  };
+
+  const handleViewFullChat = () => {
+    setShowChatPopup(false);
+    if (onChatStart) {
+      onChatStart(initialChatMessage);
     }
   };
   
@@ -41,10 +53,10 @@ export function MeetingSummary({ onBack, isPanel = false, onChatStart }: Meeting
   const [summaryContent, setSummaryContent] = useState({
     overview: "The team discussed Chief's competitive positioning as an actionable insight layer rather than just forecasting. Key differentiation: 'Forecasting tools tell you what might happen, Chief tells you what you can do today to change it'. Positioned as a complement to Gong/Clari that adds an insight layer.",
     keyPoints: [
-      "Chief’s competitive positioning: “Forecasting tools tell you what might happen, Chief tells you what you can do today to change it”",
+      "Chief's competitive positioning: 'Forecasting tools tell you what might happen, Chief tells you what you can do today to change it'",
       "Focus on actionable insights at deal level rather than broad forecasting",
       "Integration approach with existing tools (GONG, Clary) rather than competition",
-      "Position as complement that adds insight layer: “Giving every rep a personal RevOps analyst”",
+      "Position as complement that adds insight layer: 'Giving every rep a personal RevOps analyst'",
       "Seven critical insights identified for initial focus (Activity, Stalling, Close date, etc.)"
     ],
     status: "The team has defined the core insight engine framework and dashboard UI concept. Immediate focus is on delivering initial screens and setting up recurring design collaboration meetings.",
@@ -73,10 +85,10 @@ export function MeetingSummary({ onBack, isPanel = false, onChatStart }: Meeting
         setSummaryContent({
             overview: "The team discussed Chief's competitive positioning as an actionable insight layer rather than just forecasting. Key differentiation: 'Forecasting tools tell you what might happen, Chief tells you what you can do today to change it'. Positioned as a complement to Gong/Clari that adds an insight layer.",
             keyPoints: [
-              "Chief’s competitive positioning: “Forecasting tools tell you what might happen, Chief tells you what you can do today to change it”",
+              "Chief's competitive positioning: 'Forecasting tools tell you what might happen, Chief tells you what you can do today to change it'",
               "Focus on actionable insights at deal level rather than broad forecasting",
               "Integration approach with existing tools (GONG, Clary) rather than competition",
-              "Position as complement that adds insight layer: “Giving every rep a personal RevOps analyst”",
+              "Position as complement that adds insight layer: 'Giving every rep a personal RevOps analyst'",
               "Seven critical insights identified for initial focus (Activity, Stalling, Close date, etc.)"
             ],
             status: "The team has defined the core insight engine framework and dashboard UI concept. Immediate focus is on delivering initial screens and setting up recurring design collaboration meetings.",
@@ -545,33 +557,44 @@ export function MeetingSummary({ onBack, isPanel = false, onChatStart }: Meeting
         </div>
         
         {/* Bottom Input - Sticky at bottom of left column */}
-        <div className="absolute bottom-0 left-0 w-[65%] px-16 py-4 bg-gradient-to-t from-white via-white to-transparent z-10">
-          <div className="flex gap-4">
-             <Avatar className="h-10 w-10">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>ME</AvatarFallback>
-            </Avatar>
-            <div className="flex-1 rounded-xl border border-[#E6EBEC] p-3 bg-white shadow-sm">
-              <div className="mb-1 text-xs font-medium text-gray-500">
-                Ask: <span className="text-gray-900">Chief</span>
+        {!showChatPopup && (
+          <div className="absolute bottom-0 left-0 w-[65%] px-16 py-4 bg-gradient-to-t from-white via-white to-transparent z-10">
+            <div className="flex gap-4">
+              <Avatar className="h-10 w-10">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>ME</AvatarFallback>
+              </Avatar>
+              <div className="flex-1 rounded-xl border border-[#E6EBEC] p-3 bg-white shadow-sm">
+                <div className="mb-1 text-xs font-medium text-gray-500">
+                  Ask: <span className="text-gray-900">Chief</span>
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="Ask Chief about this call" 
+                  className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
               </div>
-              <input 
-                type="text" 
-                placeholder="Ask Chief about this call" 
-                className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-              />
+            </div>
+            <div className="mt-2 text-center">
+              <p className="text-[10px] text-gray-400 flex items-center justify-center gap-1">
+                <Sparkles className="h-2.5 w-2.5" />
+                Chief pulled most recent data at 1:23 am Yesterday.
+              </p>
             </div>
           </div>
-          <div className="mt-2 text-center">
-            <p className="text-[10px] text-gray-400 flex items-center justify-center gap-1">
-              <Sparkles className="h-2.5 w-2.5" />
-              Chief pulled most recent data at 1:23 am Yesterday.
-            </p>
-          </div>
-        </div>
+        )}
+
+        {/* Chat Popup */}
+        <ChiefChatPopup 
+          isOpen={showChatPopup}
+          onClose={() => setShowChatPopup(false)}
+          onViewFullChat={handleViewFullChat}
+          initialMessage={initialChatMessage}
+          contextTitle="this meeting summary"
+        />
       </div>
     </div>
   );
