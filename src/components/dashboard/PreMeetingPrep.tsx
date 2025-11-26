@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { MeetingSummary } from "./MeetingSummary";
+import { ProposalReviewSummary } from "./ProposalReviewSummary";
 import { ChiefChatPopup } from "./ChiefChatPopup";
 import { 
   ChevronLeft, 
@@ -13,7 +13,16 @@ import {
   FileText,
   X,
   MoreHorizontal,
-  Sparkles
+  Sparkles,
+  Linkedin,
+  UserPlus,
+  UserMinus,
+  Newspaper,
+  TrendingUp,
+  ExternalLink,
+  ThumbsUp,
+  MessageSquare,
+  Repeat2
 } from "lucide-react";
 import Image from "next/image";
 
@@ -45,12 +54,12 @@ export function PreMeetingPrep({ onBack, onChatStart }: PreMeetingPrepProps) {
 
   return (
     <div className="flex h-full w-full overflow-hidden bg-[#F2F6F7] p-3 relative">
-      <div className={`flex flex-col h-full bg-white rounded-xl border border-[#E6EBEC] shadow-sm overflow-y-auto transition-all duration-500 ease-in-out ${showSummary ? 'w-[35%] mr-3' : 'w-full'}`}>
+      <div className={`flex flex-col h-full bg-white rounded-xl border border-[#E6EBEC] shadow-sm overflow-y-auto transition-all duration-500 ease-in-out ${showSummary ? 'w-[64%] mr-3' : 'w-full'}`}>
         
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#E6EBEC] px-8 py-6 sticky top-0 bg-white z-10">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full hover:bg-gray-100">
+            <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full hover:bg-gray-100 border border-gray-200">
               <ChevronLeft className="h-4 w-4 text-gray-600" />
             </Button>
             <div>
@@ -104,7 +113,7 @@ export function PreMeetingPrep({ onBack, onChatStart }: PreMeetingPrepProps) {
           </div>
 
           {/* Meeting History Timeline */}
-          <Card className="shadow-none border border-[#E6EBEC]">
+          <Card className="shadow-none border border-[#E6EBEC] p-0">
             <div className="flex items-center gap-2 border-b border-[#E6EBEC] px-4 py-3 bg-white rounded-t-xl">
               <Calendar className="h-4 w-4 text-gray-500" />
               <h3 className="font-medium text-gray-900">Meeting History Timeline</h3>
@@ -156,7 +165,7 @@ export function PreMeetingPrep({ onBack, onChatStart }: PreMeetingPrepProps) {
           </Card>
 
           {/* Company Snapshot */}
-          <Card className="shadow-none border border-[#E6EBEC]">
+          <Card className="shadow-none border border-[#E6EBEC] p-0">
             <div className="flex items-center gap-2 border-b border-[#E6EBEC] px-4 py-3 bg-white rounded-t-xl">
               <Building2 className="h-4 w-4 text-gray-500" />
               <h3 className="font-medium text-gray-900">Company Snapshot</h3>
@@ -189,7 +198,7 @@ export function PreMeetingPrep({ onBack, onChatStart }: PreMeetingPrepProps) {
           </Card>
 
           {/* MEDDIC */}
-          <Card className="shadow-none border border-[#E6EBEC]">
+          <Card className="shadow-none border border-[#E6EBEC] p-0">
             <div className="flex items-center gap-2 border-b border-[#E6EBEC] px-4 py-3 bg-white rounded-t-xl">
               <FileText className="h-4 w-4 text-gray-500" />
               <h3 className="font-medium text-gray-900">MEDDIC</h3>
@@ -221,6 +230,252 @@ export function PreMeetingPrep({ onBack, onChatStart }: PreMeetingPrepProps) {
             </div>
           </Card>
 
+          {/* LinkedIn Latest Posts */}
+          <Card className="shadow-none border border-[#E6EBEC] p-0">
+            <div className="flex items-center justify-between border-b border-[#E6EBEC] px-4 py-3 bg-white rounded-t-xl">
+              <div className="flex items-center gap-2">
+                <Linkedin className="h-4 w-4 text-[#0A66C2]" />
+                <h3 className="font-medium text-gray-900">LinkedIn Latest Posts</h3>
+              </div>
+              <Button variant="ghost" size="sm" className="h-7 text-xs text-gray-500 hover:text-gray-900">
+                View all <ExternalLink className="h-3 w-3 ml-1" />
+              </Button>
+            </div>
+            <div className="p-4 space-y-4">
+              {/* Post 1 */}
+              <div className="border border-gray-100 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                <div className="flex items-start gap-4">
+                  <div className="h-16 w-16 rounded-lg bg-gray-100 shrink-0 overflow-hidden border border-gray-200">
+                    <Image 
+                      src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=200&auto=format&fit=crop" 
+                      alt="Post preview" 
+                      width={64} 
+                      height={64} 
+                      className="h-full w-full object-cover opacity-80"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Avatar className="h-5 w-5">
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>JS</AvatarFallback>
+                      </Avatar>
+                      <span className="font-medium text-gray-900 text-sm">Jane Smith</span>
+                      <span className="text-xs text-gray-500">• CFO at Acme Corp</span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                      Excited to share that we've just closed our Series C! 🎉 Looking forward to scaling our operations and bringing more value to our customers...
+                    </p>
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <span className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /> 234</span>
+                      <span className="flex items-center gap-1"><MessageSquare className="h-3 w-3" /> 45</span>
+                      <span className="flex items-center gap-1"><Repeat2 className="h-3 w-3" /> 12</span>
+                      <span>2 days ago</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Post 2 */}
+              <div className="border border-gray-100 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                <div className="flex items-start gap-4">
+                  <div className="h-16 w-16 rounded-lg bg-gray-100 shrink-0 overflow-hidden border border-gray-200">
+                    <Image 
+                      src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=200&auto=format&fit=crop" 
+                      alt="Post preview" 
+                      width={64} 
+                      height={64} 
+                      className="h-full w-full object-cover opacity-80"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Avatar className="h-5 w-5">
+                        <AvatarImage src="https://github.com/vercel.png" />
+                        <AvatarFallback>MC</AvatarFallback>
+                      </Avatar>
+                      <span className="font-medium text-gray-900 text-sm">Michael Chen</span>
+                      <span className="text-xs text-gray-500">• VP Operations at Acme Corp</span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                      Great insights from our Q3 planning session. The team is aligned on reducing operational overhead by 25% through better tooling...
+                    </p>
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <span className="flex items-center gap-1"><ThumbsUp className="h-3 w-3" /> 89</span>
+                      <span className="flex items-center gap-1"><MessageSquare className="h-3 w-3" /> 18</span>
+                      <span className="flex items-center gap-1"><Repeat2 className="h-3 w-3" /> 5</span>
+                      <span>5 days ago</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* LinkedIn Team Changes */}
+          <Card className="shadow-none border border-[#E6EBEC] p-0">
+            <div className="flex items-center justify-between border-b border-[#E6EBEC] px-4 py-3 bg-white rounded-t-xl">
+              <div className="flex items-center gap-2">
+                <Linkedin className="h-4 w-4 text-[#0A66C2]" />
+                <h3 className="font-medium text-gray-900">Team Changes</h3>
+              </div>
+              <span className="text-xs text-gray-500">Last 30 days</span>
+            </div>
+            <div className="p-4 space-y-3">
+              {/* Joined */}
+              <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-100">
+                <div className="relative h-8 w-8 shrink-0">
+                  <Avatar className="h-8 w-8 border-2 border-white ring-1 ring-green-100">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>SW</AvatarFallback>
+                  </Avatar>
+                  <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-green-100 border border-white flex items-center justify-center">
+                    <UserPlus className="h-2.5 w-2.5 text-green-600" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900 text-sm">Sarah Williams</span>
+                    <span className="text-xs px-1.5 py-0.5 bg-green-100 text-green-700 rounded">Joined</span>
+                  </div>
+                  <p className="text-xs text-gray-600">Head of Engineering • Previously at Stripe</p>
+                </div>
+                <span className="text-xs text-gray-500">2 weeks ago</span>
+              </div>
+
+              <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-100">
+                <div className="relative h-8 w-8 shrink-0">
+                  <Avatar className="h-8 w-8 border-2 border-white ring-1 ring-green-100">
+                    <AvatarImage src="https://github.com/vercel.png" />
+                    <AvatarFallback>DP</AvatarFallback>
+                  </Avatar>
+                  <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-green-100 border border-white flex items-center justify-center">
+                    <UserPlus className="h-2.5 w-2.5 text-green-600" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900 text-sm">David Park</span>
+                    <span className="text-xs px-1.5 py-0.5 bg-green-100 text-green-700 rounded">Joined</span>
+                  </div>
+                  <p className="text-xs text-gray-600">Senior Product Manager • Previously at Notion</p>
+                </div>
+                <span className="text-xs text-gray-500">3 weeks ago</span>
+              </div>
+
+              {/* Left */}
+              <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-100">
+                <div className="relative h-8 w-8 shrink-0">
+                  <Avatar className="h-8 w-8 border-2 border-white ring-1 ring-red-100">
+                    <AvatarImage src="https://github.com/nextjs.png" />
+                    <AvatarFallback>TA</AvatarFallback>
+                  </Avatar>
+                  <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-red-100 border border-white flex items-center justify-center">
+                    <UserMinus className="h-2.5 w-2.5 text-red-600" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900 text-sm">Tom Anderson</span>
+                    <span className="text-xs px-1.5 py-0.5 bg-red-100 text-red-700 rounded">Left</span>
+                  </div>
+                  <p className="text-xs text-gray-600">Director of Sales • Now at Figma</p>
+                </div>
+                <span className="text-xs text-gray-500">1 week ago</span>
+              </div>
+            </div>
+          </Card>
+
+          {/* Company News & Updates */}
+          <Card className="shadow-none border border-[#E6EBEC] p-0">
+            <div className="flex items-center justify-between border-b border-[#E6EBEC] px-4 py-3 bg-white rounded-t-xl">
+              <div className="flex items-center gap-2">
+                <Newspaper className="h-4 w-4 text-gray-500" />
+                <h3 className="font-medium text-gray-900">Company News & Updates</h3>
+              </div>
+              <Button variant="ghost" size="sm" className="h-7 text-xs text-gray-500 hover:text-gray-900">
+                View all <ExternalLink className="h-3 w-3 ml-1" />
+              </Button>
+            </div>
+            <div className="p-4 space-y-3">
+              {/* Funding News */}
+              <div className="flex items-start gap-3 p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
+                <div className="h-10 w-10 rounded-lg bg-purple-100 flex items-center justify-center shrink-0">
+                  <TrendingUp className="h-5 w-5 text-purple-600" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-medium text-gray-900 text-sm">Series C Funding</span>
+                    <span className="text-xs px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded">Funding</span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-1">Acme Corp raises $85M Series C led by Andreessen Horowitz</p>
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <span>TechCrunch</span>
+                    <span>•</span>
+                    <span>2 days ago</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Product Launch */}
+              <div className="flex items-start gap-3 p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
+                <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
+                  <Sparkles className="h-5 w-5 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-medium text-gray-900 text-sm">Product Launch</span>
+                    <span className="text-xs px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded">Product</span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-1">Acme Corp launches AI-powered analytics dashboard for enterprise customers</p>
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <span>Business Wire</span>
+                    <span>•</span>
+                    <span>1 week ago</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Partnership */}
+              <div className="flex items-start gap-3 p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
+                <div className="h-10 w-10 rounded-lg bg-teal-100 flex items-center justify-center shrink-0">
+                  <Building2 className="h-5 w-5 text-teal-600" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-medium text-gray-900 text-sm">Strategic Partnership</span>
+                    <span className="text-xs px-1.5 py-0.5 bg-teal-100 text-teal-700 rounded">Partnership</span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-1">Acme Corp partners with Salesforce to expand CRM integrations</p>
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <span>PR Newswire</span>
+                    <span>•</span>
+                    <span>2 weeks ago</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Award */}
+              <div className="flex items-start gap-3 p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
+                <div className="h-10 w-10 rounded-lg bg-yellow-100 flex items-center justify-center shrink-0">
+                  <span className="text-lg">🏆</span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-medium text-gray-900 text-sm">Industry Recognition</span>
+                    <span className="text-xs px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded">Award</span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-1">Named to Forbes Cloud 100 list for second consecutive year</p>
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <span>Forbes</span>
+                    <span>•</span>
+                    <span>3 weeks ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+
           {/* Spacer for bottom input */}
           <div className="h-[200px]"></div>
 
@@ -228,7 +483,7 @@ export function PreMeetingPrep({ onBack, onChatStart }: PreMeetingPrepProps) {
 
         {/* Bottom Input - Sticky */}
         {!showChatPopup && (
-          <div className={`absolute bottom-0 left-0 px-8 py-4 bg-gradient-to-t from-white via-white to-transparent z-10 ${showSummary ? 'w-[35%]' : 'w-full'}`}>
+          <div className={`absolute bottom-0 left-0 px-8 py-4 bg-gradient-to-t from-white via-white to-transparent z-10 ${showSummary ? 'w-[64%]' : 'w-full'}`}>
             <div className="max-w-3xl mx-auto">
               <div className="flex gap-4">
                 <Avatar className="h-10 w-10">
@@ -270,9 +525,9 @@ export function PreMeetingPrep({ onBack, onChatStart }: PreMeetingPrepProps) {
       </div>
       
       {/* Summary Panel - Slides in from right */}
-      <div className={`absolute top-3 right-3 bottom-3 w-[64%] shadow-xl transform transition-transform duration-500 ease-in-out z-20 ${showSummary ? 'translate-x-0' : 'translate-x-[110%]'}`}>
+      <div className={`absolute top-3 right-3 bottom-3 w-[35%] shadow-xl transform transition-transform duration-500 ease-in-out z-20 ${showSummary ? 'translate-x-0' : 'translate-x-[110%]'}`}>
         <div className="h-full w-full bg-white rounded-xl overflow-hidden border border-[#E6EBEC]">
-          <MeetingSummary onBack={() => setShowSummary(false)} isPanel={true} />
+          <ProposalReviewSummary onBack={() => setShowSummary(false)} isPanel={true} />
         </div>
       </div>
     </div>

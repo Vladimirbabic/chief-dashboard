@@ -22,7 +22,8 @@ import {
   Trash2,
   ArrowUpRight,
   Calendar,
-  FileText
+  FileText,
+  MessageCircle
 } from "lucide-react";
 import { InsightDetail } from "@/components/dashboard/InsightDetail";
 import { MeetingSummary } from "@/components/dashboard/MeetingSummary";
@@ -91,7 +92,7 @@ export default function DashboardPage() {
               <h2 className="text-xl font-semibold text-gray-900">Insights</h2>
               <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-gray-100 px-1.5 text-xs font-medium text-gray-600">6</span>
             </div>
-            <Button variant="ghost" className="h-8 text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:border hover:border-gray-200">
+            <Button variant="ghost" className="h-8 text-xs font-medium text-teal-600 hover:bg-teal-50 hover:text-teal-700 hover:border hover:border-teal-200">
               Go to Insights Inbox
             </Button>
           </div>
@@ -161,6 +162,7 @@ export default function DashboardPage() {
                 </div>
                 <p className="text-sm text-gray-600">
                   Meeting Summary: <span className="font-medium text-gray-900">Int Chief Daily: Standup Prod & Eng</span>
+                  <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">2 updates</span>
                 </p>
               </div>
               <Button 
@@ -184,11 +186,10 @@ export default function DashboardPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <span className="font-medium text-gray-900">Chief</span>
-                  <Mail className="h-4 w-4 text-red-500" /> 
                 </div>
                 <p className="text-sm text-gray-600 flex items-center gap-1.5">
+                  <Mail className="h-3.5 w-3.5 text-gray-400" />
                   Chief drafted an email for you: 
-                  <Calendar className="h-3.5 w-3.5 text-gray-400" />
                   <span className="font-medium text-gray-900">Following Up on Our Conversation</span>
                 </p>
               </div>
@@ -215,7 +216,7 @@ export default function DashboardPage() {
                   <span className="font-medium text-gray-900">Sam Daw</span>
                 </div>
                 <p className="text-sm text-gray-600">
-                  <span className="text-teal-600">Sharing Chief Chat with you:</span> <span className="font-medium text-gray-900">Q3 Sales Strategy Review</span>
+                  <span className="text-teal-600 inline-flex items-center gap-1"><MessageCircle className="h-3.5 w-3.5" />Sharing Chief Chat with you:</span> <span className="font-medium text-gray-900">Q3 Sales Strategy Review</span>
                 </p>
               </div>
               <Button variant="outline" className="h-8 text-xs font-medium text-gray-600 border-gray-200 hover:bg-gray-100 hover:text-gray-900">

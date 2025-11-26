@@ -24,7 +24,7 @@ interface MeetingSummaryProps {
 export function MeetingSummary({ onBack, isPanel = false, onChatStart }: MeetingSummaryProps) {
   const [showSummaryTemplates, setShowSummaryTemplates] = useState(false);
   const [showEmailTemplates, setShowEmailTemplates] = useState(false);
-  const [activeTab, setActiveTab] = useState<'transcript' | 'followup' | 'updates'>('transcript');
+  const [activeTab, setActiveTab] = useState<'transcript' | 'followup' | 'updates' | 'snapshots' | 'clips'>('transcript');
   const [chatInput, setChatInput] = useState("");
   const [showChatPopup, setShowChatPopup] = useState(false);
   const [initialChatMessage, setInitialChatMessage] = useState("");
@@ -166,7 +166,7 @@ export function MeetingSummary({ onBack, isPanel = false, onChatStart }: Meeting
       <div className="flex flex-col w-full h-full bg-white rounded-xl border border-[#E6EBEC] shadow-sm overflow-hidden">
         {/* Top Header */}
         <div className="flex items-center gap-4 border-b border-[#E6EBEC] px-6 py-4">
-          <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full hover:bg-gray-100">
+          <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full hover:bg-gray-100 border border-gray-200">
             <ChevronLeft className="h-4 w-4 text-gray-600" />
           </Button>
           <div className="flex-1">
@@ -289,25 +289,38 @@ export function MeetingSummary({ onBack, isPanel = false, onChatStart }: Meeting
 
           {/* Right Column - Transcript/Follow up/Updates - 35% */}
           <div className="flex-[0_0_35%] flex flex-col bg-gray-50/50">
-            <div className="flex items-center gap-2 border-b border-[#E6EBEC] px-6 py-3 bg-white">
+            <div className="flex items-center gap-1 border-b border-[#E6EBEC] px-4 py-3 bg-white overflow-x-auto">
               <button 
-                className={`h-8 px-3 text-sm font-medium rounded-full transition-colors ${activeTab === 'transcript' ? 'text-gray-900 bg-gray-100' : 'text-gray-500 hover:text-gray-900'}`}
-                onClick={() => setActiveTab('transcript')}
-              >
-                Transcript
-              </button>
-              <button 
-                className={`h-8 px-3 text-sm font-medium rounded-full transition-colors ${activeTab === 'followup' ? 'text-gray-900 bg-gray-100' : 'text-gray-500 hover:text-gray-900'}`}
+                className={`h-8 px-3 text-sm font-medium rounded-full transition-colors whitespace-nowrap ${activeTab === 'followup' ? 'text-gray-900 bg-gray-100' : 'text-gray-500 hover:text-gray-900'}`}
                 onClick={() => setActiveTab('followup')}
               >
                 Follow up
               </button>
               <button 
-                className={`h-8 px-3 text-sm font-medium rounded-full transition-colors flex items-center gap-1 ${activeTab === 'updates' ? 'text-gray-900 bg-gray-100' : 'text-gray-500 hover:text-gray-900'}`}
+                className={`h-8 px-3 text-sm font-medium rounded-full transition-colors flex items-center gap-1 whitespace-nowrap ${activeTab === 'updates' ? 'text-gray-900 bg-gray-100' : 'text-gray-500 hover:text-gray-900'}`}
                 onClick={() => setActiveTab('updates')}
               >
                 Updates
                 <span className="flex h-4 w-4 items-center justify-center rounded-full bg-teal-100 text-[10px] font-bold text-teal-700">2</span>
+              </button>
+              <button 
+                className={`h-8 px-3 text-sm font-medium rounded-full transition-colors whitespace-nowrap ${activeTab === 'snapshots' ? 'text-gray-900 bg-gray-100' : 'text-gray-500 hover:text-gray-900'}`}
+                onClick={() => setActiveTab('snapshots')}
+              >
+                Snapshots
+              </button>
+              <button 
+                className={`h-8 px-3 text-sm font-medium rounded-full transition-colors flex items-center gap-1 whitespace-nowrap ${activeTab === 'clips' ? 'text-gray-900 bg-gray-100' : 'text-gray-500 hover:text-gray-900'}`}
+                onClick={() => setActiveTab('clips')}
+              >
+                Clips
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-purple-100 text-[10px] font-bold text-purple-700">5</span>
+              </button>
+              <button 
+                className={`h-8 px-3 text-sm font-medium rounded-full transition-colors whitespace-nowrap ${activeTab === 'transcript' ? 'text-gray-900 bg-gray-100' : 'text-gray-500 hover:text-gray-900'}`}
+                onClick={() => setActiveTab('transcript')}
+              >
+                Transcript
               </button>
             </div>
 
@@ -548,6 +561,501 @@ export function MeetingSummary({ onBack, isPanel = false, onChatStart }: Meeting
                       <Button size="sm" className="h-7 text-xs bg-teal-600 hover:bg-teal-700 text-white">
                         Approve
                       </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'snapshots' && (
+                <div className="space-y-6 pb-8">
+                  {/* Key Moments */}
+                  <div className="bg-white rounded-xl border border-[#E6EBEC] p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Your Key Moments From This Call</h3>
+                    <p className="text-sm text-gray-500 mb-4">We pulled the most important moments from your call for quick review:</p>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center shrink-0">
+                          <span className="text-lg">💬</span>
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-semibold text-gray-900">Pricing Discussion</span>
+                            <span className="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded text-gray-600">00:12:15</span>
+                          </div>
+                          <p className="text-sm text-gray-600">Customer asked about enterprise tier options and volume discounts.</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+                          <span className="text-lg">⭐</span>
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-semibold text-gray-900">Feature Request</span>
+                            <span className="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded text-gray-600">00:24:30</span>
+                          </div>
+                          <p className="text-sm text-gray-600">Strong interest in Jira integration. Added to product wish list.</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-teal-50 flex items-center justify-center shrink-0">
+                          <span className="text-lg text-teal-600">✓</span>
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-semibold text-gray-900">Next Steps Agreed</span>
+                            <span className="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded text-gray-600">00:41:10</span>
+                          </div>
+                          <p className="text-sm text-gray-600">You agreed to send the proposal by Friday EOD.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sentiment Snapshot */}
+                  <div className="bg-white rounded-xl border border-[#E6EBEC] p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Sentiment Snapshot</h3>
+                    <p className="text-sm text-gray-500 mb-4">Here is the emotional tone breakdown from your latest call:</p>
+                    
+                    <div className="grid grid-cols-3 gap-3 mb-4">
+                      <div className="bg-teal-50 rounded-xl p-4 text-center border-2 border-teal-100">
+                        <div className="text-2xl mb-1">😊</div>
+                        <div className="font-semibold text-teal-700">Positive</div>
+                        <div className="text-xs text-gray-500 mt-1">Customer</div>
+                      </div>
+                      <div className="bg-teal-50 rounded-xl p-4 text-center border-2 border-teal-100">
+                        <div className="text-2xl mb-1">😐</div>
+                        <div className="font-semibold text-teal-700">Neutral</div>
+                        <div className="text-xs text-gray-500 mt-1">You (Rep)</div>
+                      </div>
+                      <div className="bg-teal-50 rounded-xl p-4 text-center border-2 border-teal-100">
+                        <div className="text-2xl mb-1">↑</div>
+                        <div className="font-semibold text-teal-700">Improving</div>
+                        <div className="text-xs text-gray-500 mt-1">vs Last Call</div>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-500 text-center">Positive sentiment peaked during the roadmap discussion.</p>
+                  </div>
+
+                  {/* Question-to-Answer Ratio */}
+                  <div className="bg-white rounded-xl border border-[#E6EBEC] p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Your Question-to-Answer Ratio</h3>
+                    <p className="text-sm text-gray-500 mb-4">Good discovery relies on asking the right amount of questions. Here is your ratio:</p>
+                    
+                    <div className="mb-3">
+                      <div className="flex justify-center gap-8 text-sm font-semibold text-gray-700 mb-2">
+                        <span>You Asked</span>
+                        <span>You Answered</span>
+                      </div>
+                      <div className="flex h-12 rounded-lg overflow-hidden">
+                        <div className="bg-purple-400 flex-[60] flex items-center justify-center">
+                          <span className="text-xl font-bold text-white">12</span>
+                        </div>
+                        <div className="bg-purple-200 flex-[40] flex items-center justify-center">
+                          <span className="text-xl font-bold text-purple-600">8</span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>60% Discovery</span>
+                        <span>40% Education</span>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-purple-50 rounded-lg p-3 text-center">
+                      <p className="text-sm text-gray-700"><span className="font-semibold">Ideal Benchmark:</span> Top performers ask 10-15 questions per discovery call. You are in the green zone!</p>
+                    </div>
+                  </div>
+
+                  {/* Speaking Pace Analysis */}
+                  <div className="bg-white rounded-xl border border-[#E6EBEC] p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Your Speaking Pace Analysis</h3>
+                    <p className="text-sm text-gray-500 mb-4">We noticed a significant change in your speaking pace during this call:</p>
+                    
+                    <div className="mb-4">
+                      <div className="h-3 rounded-full bg-gradient-to-r from-teal-400 via-green-400 via-yellow-300 to-red-300 relative">
+                        <div className="absolute right-[15%] top-0 w-0.5 h-full bg-gray-800"></div>
+                      </div>
+                      <div className="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>SLOW</span>
+                        <span>OPTIMAL</span>
+                        <span>FAST</span>
+                      </div>
+                    </div>
+                    
+                    <div className="text-center mb-3">
+                      <span className="text-4xl font-bold text-orange-400">180</span>
+                      <span className="text-lg text-gray-500 ml-1">wpm</span>
+                      <div className="inline-block ml-2 bg-orange-100 text-orange-600 text-xs font-medium px-2 py-1 rounded">
+                        +24% faster than your average
+                      </div>
+                    </div>
+                    
+                    <p className="text-sm text-gray-500 text-center">Fast pacing can sometimes reduce clarity. Try to slow down during technical explanations.</p>
+                  </div>
+
+                  {/* Long Monologue Detected */}
+                  <div className="bg-white rounded-xl border border-[#E6EBEC] p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Long Monologue Detected</h3>
+                    <p className="text-sm text-gray-500 mb-4">We detected an extended monologue where you spoke for nearly a minute without pause:</p>
+                    
+                    <div className="bg-gray-800 rounded-xl p-4 text-white">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+                            <span className="text-sm">🎙️</span>
+                          </div>
+                          <div>
+                            <div className="text-[10px] text-gray-400 uppercase tracking-wide">DURATION</div>
+                            <div className="text-teal-400 font-semibold">52 Seconds</div>
+                          </div>
+                        </div>
+                        <span className="text-xs font-mono text-gray-400">00:08:22</span>
+                      </div>
+                      
+                      <div className="h-px bg-gray-700 mb-3"></div>
+                      
+                      <div className="flex items-end gap-0.5 h-8 mb-3">
+                        {[3, 5, 3, 6, 4, 7, 9, 5, 6, 4, 7, 5, 3, 6, 8, 4, 5, 7, 3, 5].map((h, i) => (
+                          <div 
+                            key={i} 
+                            className="flex-1 rounded-sm" 
+                            style={{ 
+                              height: `${h * 10}%`, 
+                              backgroundColor: h > 6 ? '#D97756' : h > 4 ? '#C9A87C' : '#8B7355' 
+                            }}
+                          />
+                        ))}
+                      </div>
+                      
+                      <p className="text-sm text-gray-300 italic">"...and that basically covers the entire architecture of the platform which I know is a lot to take in but essentially..."</p>
+                    </div>
+                    
+                    <p className="text-sm text-gray-500 text-center mt-4">Shorter turns (under 30s) improve engagement. Try ending with a check-in question.</p>
+                  </div>
+
+                  {/* Customer Engagement Heatmap */}
+                  <div className="bg-white rounded-xl border border-[#E6EBEC] p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Customer Engagement Heatmap</h3>
+                    <p className="text-sm text-gray-500 mb-4">This heatmap shows where your customer was most engaged during the call:</p>
+                    
+                    <div className="relative mb-4">
+                      <div className="h-20 rounded-lg bg-gradient-to-r from-orange-200 via-orange-300 to-purple-100 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-orange-400/50 to-transparent" style={{ left: '25%', width: '30%' }}></div>
+                        <div className="absolute top-1/2 left-[40%] -translate-y-1/2 bg-white px-2 py-1 rounded text-xs font-medium text-gray-700 shadow-sm">
+                          Peak Interest
+                        </div>
+                      </div>
+                      <div className="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>00:00</span>
+                        <span>15:00</span>
+                        <span>30:00</span>
+                        <span>45:00</span>
+                        <span>60:00</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm">
+                        <div className="w-3 h-3 rounded-full bg-orange-400"></div>
+                        <span className="font-medium text-gray-900">High Engagement:</span>
+                        <span className="text-gray-600">Product Demo (18:00 - 24:00)</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <div className="w-3 h-3 rounded-full bg-purple-200"></div>
+                        <span className="font-medium text-gray-900">Low Engagement:</span>
+                        <span className="text-gray-600">Company Overview (02:00 - 08:00)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Topic Breakdown Report */}
+                  <div className="bg-white rounded-xl border border-[#E6EBEC] p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Topic Breakdown Report</h3>
+                    <p className="text-sm text-gray-500 mb-4">Here is how your time was distributed across key topics:</p>
+                    
+                    <div className="flex justify-center mb-4">
+                      <div className="relative w-40 h-40">
+                        <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+                          <circle cx="18" cy="18" r="14" fill="none" stroke="#C4B5FD" strokeWidth="4" strokeDasharray="26.4 100" strokeDashoffset="0" />
+                          <circle cx="18" cy="18" r="14" fill="none" stroke="#34D399" strokeWidth="4" strokeDasharray="21.1 100" strokeDashoffset="-26.4" />
+                          <circle cx="18" cy="18" r="14" fill="none" stroke="#FDE047" strokeWidth="4" strokeDasharray="15.8 100" strokeDashoffset="-47.5" />
+                          <circle cx="18" cy="18" r="14" fill="none" stroke="#DDD6FE" strokeWidth="4" strokeDasharray="14.1 100" strokeDashoffset="-63.3" />
+                          <circle cx="18" cy="18" r="14" fill="none" stroke="#FCA5A5" strokeWidth="4" strokeDasharray="10.6 100" strokeDashoffset="-77.4" />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-xs font-semibold text-teal-600 uppercase tracking-wide">TOPICS</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-purple-400"></div>
+                        <span className="text-gray-700">Product (30%)</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
+                        <span className="text-gray-700">Pricing (24%)</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-yellow-300"></div>
+                        <span className="text-gray-700">Timeline (18%)</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-purple-200"></div>
+                        <span className="text-gray-700">Discovery (16%)</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-red-300"></div>
+                        <span className="text-gray-700">Objections (12%)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Customer Commitments */}
+                  <div className="bg-white rounded-xl border border-[#E6EBEC] p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Customer Commitments Identified</h3>
+                    <p className="text-sm text-gray-500 mb-4">Confirming these agreements in writing will increase deal velocity:</p>
+                    
+                    <div className="bg-teal-50 rounded-xl p-4 border border-teal-100">
+                      <div className="flex justify-center mb-4">
+                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
+                          <span className="text-2xl">🤝</span>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-start gap-3">
+                          <div className="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center shrink-0">
+                            <span className="text-xs font-bold text-teal-700">1</span>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-teal-800">Sandbox Access</p>
+                            <p className="text-sm text-gray-600 italic">"Yes, we can provide access to the sandbox."</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center shrink-0">
+                            <span className="text-xs font-bold text-teal-700">2</span>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-teal-800">Compliance Docs</p>
+                            <p className="text-sm text-gray-600 italic">"I'll send you the compliance docs by EOD."</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'clips' && (
+                <div className="space-y-4 pb-8">
+                  {/* Video Player Placeholder */}
+                  <div className="bg-gray-900 rounded-xl overflow-hidden aspect-video relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-3 cursor-pointer hover:bg-white/30 transition-colors">
+                          <div className="w-0 h-0 border-l-[20px] border-l-white border-y-[12px] border-y-transparent ml-1"></div>
+                        </div>
+                        <p className="text-white/60 text-sm">Click to play recording</p>
+                      </div>
+                    </div>
+                    
+                    {/* Video Controls */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                      <div className="flex items-center gap-2 mb-2 text-white text-xs">
+                        <span className="bg-black/40 px-2 py-0.5 rounded">4:56 · Introduction</span>
+                        <div className="flex-1"></div>
+                        <span>30:54</span>
+                      </div>
+                      <div className="h-1 bg-gray-600 rounded-full">
+                        <div className="h-full w-[16%] bg-teal-400 rounded-full relative">
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-teal-400 rounded-full"></div>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between mt-3">
+                        <div className="flex items-center gap-3 text-white">
+                          <button className="hover:text-teal-400">🔊</button>
+                          <button className="text-xs font-medium">1x</button>
+                        </div>
+                        <div className="flex items-center gap-3 text-white">
+                          <button className="hover:text-teal-400">⏪</button>
+                          <button className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30">⏸</button>
+                          <button className="hover:text-teal-400">⏩</button>
+                        </div>
+                        <div className="flex items-center gap-3 text-white">
+                          <button className="hover:text-teal-400">⬜</button>
+                          <button className="hover:text-teal-400">⛶</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Speakers Timeline */}
+                  <div className="space-y-3">
+                    {/* Speaker 1 */}
+                    <div className="bg-white rounded-lg border border-[#E6EBEC] p-3 cursor-pointer hover:border-teal-300 transition-colors">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                          <span className="font-medium text-gray-900 text-sm">Lina Morris</span>
+                          <span className="text-gray-400">·</span>
+                          <span className="text-gray-500 text-sm">Grain</span>
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          <span className="font-medium">52%</span> · 16 min
+                        </div>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full flex gap-0.5 overflow-hidden">
+                        {[1,0,1,1,0,1,0,0,1,1,1,0,1,0,1,1,0,1,1,0,1,0,1,1,0,1,1,0,0,1].map((active, i) => (
+                          <div key={i} className={`flex-1 rounded-sm ${active ? 'bg-purple-400' : 'bg-gray-200'}`}></div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Speaker 2 */}
+                    <div className="bg-white rounded-lg border border-[#E6EBEC] p-3 cursor-pointer hover:border-teal-300 transition-colors">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                          <span className="font-medium text-gray-900 text-sm">Alex Stoutenburgh</span>
+                          <span className="text-gray-400">·</span>
+                          <span className="text-gray-500 text-sm">Quest.io</span>
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          <span className="font-medium">48%</span> · 14 min
+                        </div>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full flex gap-0.5 overflow-hidden">
+                        {[0,1,0,1,1,0,1,0,1,0,0,1,1,0,1,0,1,1,0,1,0,1,0,1,1,0,1,0,1,0].map((active, i) => (
+                          <div key={i} className={`flex-1 rounded-sm ${active ? 'bg-cyan-400' : 'bg-gray-200'}`}></div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Screenshare */}
+                    <div className="bg-white rounded-lg border border-[#E6EBEC] p-3 cursor-pointer hover:border-teal-300 transition-colors">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                          <span className="font-medium text-gray-900 text-sm">Screenshare</span>
+                        </div>
+                        <div className="text-sm text-gray-500">12 min</div>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full flex gap-0.5 overflow-hidden">
+                        {[0,0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0].map((active, i) => (
+                          <div key={i} className={`flex-1 rounded-sm ${active ? 'bg-gray-400' : 'bg-gray-200'}`}></div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Comments */}
+                    <div className="bg-white rounded-lg border border-[#E6EBEC] p-3 cursor-pointer hover:border-teal-300 transition-colors">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                          <span className="font-medium text-gray-900 text-sm">Comments</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-sm text-gray-500">
+                          <span>5</span>
+                          <ChevronLeft className="h-4 w-4 -rotate-180" />
+                        </div>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full flex gap-0.5 overflow-hidden">
+                        {[0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0].map((active, i) => (
+                          <div key={i} className={`flex-1 rounded-sm ${active ? 'bg-gray-500' : 'bg-gray-200'}`}></div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Clips */}
+                    <div className="bg-white rounded-lg border border-[#E6EBEC] p-3 cursor-pointer hover:border-teal-300 transition-colors">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                          <span className="font-medium text-gray-900 text-sm">Clips</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-sm text-gray-500">
+                          <span>5</span>
+                          <ChevronLeft className="h-4 w-4 -rotate-180" />
+                        </div>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full flex gap-0.5 overflow-hidden">
+                        {[0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1].map((active, i) => (
+                          <div key={i} className={`flex-1 rounded-sm ${active ? 'bg-gray-500' : 'bg-gray-200'}`}></div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Saved Clips Section */}
+                  <div className="mt-6">
+                    <h4 className="text-sm font-semibold text-gray-900 mb-3">Saved Clips</h4>
+                    <div className="space-y-2">
+                      <div className="bg-white rounded-lg border border-[#E6EBEC] p-3 cursor-pointer hover:border-teal-300 hover:bg-teal-50/50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded bg-purple-100 flex items-center justify-center shrink-0">
+                            <span className="text-purple-600 text-xs">▶</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">Pricing objection handling</p>
+                            <p className="text-xs text-gray-500">00:12:15 · 45 sec</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg border border-[#E6EBEC] p-3 cursor-pointer hover:border-teal-300 hover:bg-teal-50/50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded bg-purple-100 flex items-center justify-center shrink-0">
+                            <span className="text-purple-600 text-xs">▶</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">Feature demo - Dashboard</p>
+                            <p className="text-xs text-gray-500">00:18:30 · 2 min</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg border border-[#E6EBEC] p-3 cursor-pointer hover:border-teal-300 hover:bg-teal-50/50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded bg-purple-100 flex items-center justify-center shrink-0">
+                            <span className="text-purple-600 text-xs">▶</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">Integration requirements</p>
+                            <p className="text-xs text-gray-500">00:24:45 · 1 min</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg border border-[#E6EBEC] p-3 cursor-pointer hover:border-teal-300 hover:bg-teal-50/50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded bg-purple-100 flex items-center justify-center shrink-0">
+                            <span className="text-purple-600 text-xs">▶</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">Next steps agreement</p>
+                            <p className="text-xs text-gray-500">00:41:10 · 30 sec</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg border border-[#E6EBEC] p-3 cursor-pointer hover:border-teal-300 hover:bg-teal-50/50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded bg-purple-100 flex items-center justify-center shrink-0">
+                            <span className="text-purple-600 text-xs">▶</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">Customer success story mention</p>
+                            <p className="text-xs text-gray-500">00:28:00 · 1 min</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

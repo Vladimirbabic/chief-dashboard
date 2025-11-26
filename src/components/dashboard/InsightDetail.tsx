@@ -47,7 +47,7 @@ export function InsightDetail({ onBack, onChatStart }: InsightDetailProps) {
       <div className={`flex flex-col w-full h-full bg-white rounded-xl border border-[#E6EBEC] shadow-sm transition-all duration-500 ease-in-out ${showReasoning ? 'mr-[400px]' : ''}`}>
         {/* Header */}
         <div className="flex items-center gap-4 border-b border-[#E6EBEC] px-8 py-6">
-          <Button variant="ghost" size="icon" onClick={onBack} className="h-10 w-10 rounded-full hover:bg-gray-100">
+          <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full hover:bg-gray-100 border border-gray-200">
             <ChevronLeft className="h-5 w-5 text-gray-600" />
           </Button>
           <Image src="/chief-logo.png" alt="Chief" width={24} height={24} className="h-6 w-6" />

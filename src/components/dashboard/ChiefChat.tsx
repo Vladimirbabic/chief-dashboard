@@ -196,7 +196,7 @@ export function ChiefChat({ onBack, initialMessage, contextType, contextData }: 
             <Button variant="ghost" size="sm" className="text-gray-500 gap-2">
                <Share className="h-4 w-4" /> Share
             </Button>
-            <Button variant="ghost" size="icon" onClick={onBack} className="text-gray-500">
+            <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full hover:bg-gray-100 border border-gray-200">
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </div>
