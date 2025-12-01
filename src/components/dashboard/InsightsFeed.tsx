@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { ChiefChatPopup } from "./ChiefChatPopup";
-import { MeetingSummary } from "./MeetingSummary";
+import { ProposalReviewSummary } from "./ProposalReviewSummary";
 
 interface InsightsFeedProps {
   onBack?: () => void;
@@ -1090,7 +1090,7 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
         }`}
       >
         {showMeetingPanel && (
-          <MeetingSummary 
+          <ProposalReviewSummary 
             onBack={() => setShowMeetingPanel(false)} 
             isPanel={true}
           />
