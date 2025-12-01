@@ -1032,7 +1032,7 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
         
         {/* Content */}
         <div className={`flex-1 overflow-y-auto relative ${isSingleView ? 'p-4 pb-24 bg-white' : 'p-4 pb-20'}`}>
-          <div className="max-w-3xl space-y-4">
+          <div className="max-w-3xl mx-auto space-y-4">
             {displayInsights.map(insight => (
               <div key={insight.id} className={isSingleView ? "" : "bg-white rounded-2xl border border-[#E6EBEC] shadow-sm overflow-hidden p-4"}>
                  <InsightCard insight={insight} onMeetingClick={() => setShowMeetingPanel(true)} />
@@ -1043,7 +1043,7 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
           {/* Bottom Input - Sticky */}
           {isSingleView && !isChatOpen && (
             <div className="absolute bottom-0 left-0 right-0 px-4 py-3 bg-gradient-to-t from-white via-white to-transparent z-10">
-              <div className="max-w-3xl">
+              <div className="max-w-3xl mx-auto">
                 <div className="flex gap-3">
                   <Avatar className="h-9 w-9 shrink-0">
                     <AvatarImage src="https://github.com/shadcn.png" />
