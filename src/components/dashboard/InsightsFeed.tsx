@@ -657,11 +657,25 @@ function InsightVisual({ type, data }: InsightVisualData) {
                         <stop offset="100%" stopColor="#FF9B82" stopOpacity="0" />
                       </linearGradient>
                     </defs>
-                    
-                    {/* End point markers */}
-                    <circle cx="100" cy={100 - (withInfoData[withInfoData.length - 1] / maxValue) * 100} r="4" fill="#00C29F" />
-                    <circle cx="100" cy={100 - (withoutInfoData[withoutInfoData.length - 1] / maxValue) * 100} r="4" fill="#FF9B82" />
                   </svg>
+                  
+                  {/* End point markers - rendered as divs to avoid SVG stretching */}
+                  <div 
+                    className="absolute w-2 h-2 rounded-full bg-[#00C29F] -translate-x-1/2 -translate-y-1/2"
+                    style={{ 
+                      right: 0, 
+                      top: `${(100 - withInfoData[withInfoData.length - 1]) * (chartHeight / 100)}px`,
+                      transform: 'translateY(-50%)'
+                    }}
+                  />
+                  <div 
+                    className="absolute w-2 h-2 rounded-full bg-[#FF9B82] -translate-x-1/2 -translate-y-1/2"
+                    style={{ 
+                      right: 0, 
+                      top: `${(100 - withoutInfoData[withoutInfoData.length - 1]) * (chartHeight / 100)}px`,
+                      transform: 'translateY(-50%)'
+                    }}
+                  />
                   
                   {/* End values */}
                   <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-between pointer-events-none" style={{ transform: 'translateX(calc(100% + 8px))' }}>
