@@ -30,6 +30,7 @@ import { MeetingSummary } from "@/components/dashboard/MeetingSummary";
 import { PreMeetingPrep } from "@/components/dashboard/PreMeetingPrep";
 import { RevenueGrowthInsight } from "@/components/dashboard/RevenueGrowthInsight";
 import { ChiefChat } from "@/components/dashboard/ChiefChat";
+import { InsightsFeed, insights } from "@/components/dashboard/InsightsFeed";
 
 export default function DashboardPage() {
   const [selectedInsight, setSelectedInsight] = useState<string | null>(null);
@@ -65,34 +66,46 @@ export default function DashboardPage() {
     if (selectedInsight === 'pre-meeting') {
       return <PreMeetingPrep onBack={() => setSelectedInsight(null)} onChatStart={(msg) => handleChatStart('prep', msg)} />;
     }
+    if (selectedInsight === 'insights-feed') {
+      return <InsightsFeed onBack={() => setSelectedInsight(null)} />;
+    }
+    
+    if (selectedInsight?.startsWith('insight-')) {
+      const insightId = selectedInsight.replace('insight-', '');
+      return <InsightsFeed onBack={() => setSelectedInsight(null)} insightId={insightId} />;
+    }
     
     return (
       <div className="mx-auto max-w-[1128px] p-8">
         <h1 className="mb-2 text-4xl font-medium text-gray-900">
           Good Morning Bret,
         </h1>
-        <div className="mb-8 text-xl font-normal text-gray-500 flex items-center gap-2">
-          Here are
+        <div className="mb-8 text-xl font-normal text-gray-500 flex items-center gap-2 flex-wrap">
+          Chief found
           <span className="inline-flex items-center gap-1 text-gray-900 font-medium">
             <Sparkles className="h-5 w-5 text-teal-600" />
-            6 insights
+            {insights.length} deals at risk
           </span>
           and
           <span className="inline-flex items-center gap-1 text-gray-900 font-medium">
             <Video className="h-5 w-5 text-purple-600" />
             2 meetings
           </span>
-          that are on your plate today.
+          that need your attention today.
         </div>
         
         {/* Insights Section */}
         <section className="mb-12 overflow-hidden rounded-xl border border-[#E6EBEC] bg-white shadow-[0px_0px_6px_rgba(0,0,0,0.02),0px_2px_4px_rgba(0,0,0,0.08)]">
           <div className="flex items-center justify-between border-b border-[#E6EBEC] px-6 py-4">
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-semibold text-gray-900">Insights</h2>
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-gray-100 px-1.5 text-xs font-medium text-gray-600">6</span>
+              <h2 className="text-xl font-semibold text-gray-900">Deal Insights</h2>
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-teal-100 px-1.5 text-xs font-medium text-teal-700">{insights.length}</span>
             </div>
-            <Button variant="ghost" className="h-8 text-xs font-medium text-teal-600 hover:bg-teal-50 hover:text-teal-700 hover:border hover:border-teal-200">
+            <Button 
+              variant="ghost" 
+              className="h-8 text-xs font-medium text-teal-600 hover:bg-teal-50 hover:text-teal-700 hover:border hover:border-teal-200"
+              onClick={() => setSelectedInsight('insights-feed')}
+            >
               Go to Insights Inbox
             </Button>
           </div>
@@ -177,34 +190,6 @@ export default function DashboardPage() {
               </Button>
             </div>
 
-            {/* Item 3 - Chief (Email) */}
-            <div 
-              className="group flex items-center gap-4 p-4 hover:bg-gray-50 border-b border-[#E6EBEC] last:border-0 cursor-pointer"
-              onClick={() => setSelectedInsight('email')}
-            >
-              <Image src="/chief-logo.png" alt="Chief" width={40} height={40} className="h-10 w-10 rounded-full" />
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-900">Chief</span>
-                </div>
-                <p className="text-sm text-gray-600 flex items-center gap-1.5">
-                  <Mail className="h-3.5 w-3.5 text-gray-400" />
-                  Chief drafted an email for you: 
-                  <span className="font-medium text-gray-900">Following Up on Our Conversation</span>
-                </p>
-              </div>
-              <Button 
-                variant="outline" 
-                className="h-8 text-xs font-medium text-gray-600 border-gray-200 hover:bg-gray-100 hover:text-gray-900"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedInsight('email');
-                }}
-              >
-                Review and Send
-              </Button>
-            </div>
-
             {/* Item 4 - Sam Daw */}
             <div className="group flex items-center gap-4 p-4 hover:bg-gray-50 border-b border-[#E6EBEC] last:border-0">
                <Avatar className="h-10 w-10">
@@ -224,57 +209,44 @@ export default function DashboardPage() {
               </Button>
             </div>
             
-            {/* Item 5 - Chief Intelligence */}
-            <div 
-              className="group flex items-center gap-4 bg-gray-50/50 p-4 hover:bg-gray-50 border-b border-[#E6EBEC] last:border-0 cursor-pointer"
-              onClick={() => setSelectedInsight('revenue-growth')}
-            >
-              <Image src="/chief-logo.png" alt="Chief Intelligence" width={40} height={40} className="h-10 w-10 rounded-full" />
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-900">Chief Intelligence</span>
-                </div>
-                <p className="text-sm text-gray-600">New Insight: Revenue Growth Opportunity</p>
-              </div>
-              <Button 
-                variant="outline" 
-                className="h-8 text-xs font-medium text-gray-600 border-gray-200 hover:bg-gray-100 hover:text-gray-900"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedInsight('revenue-growth');
-                }}
+            {/* Inbox Insights */}
+            {insights.map((insight) => (
+              <div 
+                key={insight.id}
+                className="group flex items-center gap-4 bg-gray-50/50 p-4 hover:bg-gray-50 border-b border-[#E6EBEC] last:border-0 cursor-pointer"
+                onClick={() => setSelectedInsight(`insight-${insight.id}`)}
               >
-                View Insight
-              </Button>
-            </div>
-
-            {/* Item 6 - Chief Opportunities */}
-            <div className="group flex items-center gap-4 p-4 hover:bg-gray-50 border-b border-[#E6EBEC] last:border-0">
-              <Image src="/opportinities-logo.png" alt="Chief Opportunities" width={40} height={40} className="h-10 w-10 rounded-full" />
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-900">Chief Opportunities</span>
+                <Image src="/chief-logo.png" alt="Chief Intelligence" width={40} height={40} className="h-10 w-10 rounded-full" />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900">Chief Intelligence</span>
+                  </div>
+                  <p className="text-sm text-gray-600 flex items-center gap-1">
+                    New Insight: <span className="font-medium text-gray-900">{insight.type}</span> • 
+                    <span className="inline-flex items-center gap-1 font-medium text-gray-900">
+                      {insight.company}
+                      <Image 
+                        src={`https://logo.clearbit.com/${insight.companyDomain}`} 
+                        alt={insight.company} 
+                        width={14} 
+                        height={14} 
+                        className="rounded-sm" 
+                      />
+                    </span>
+                  </p>
                 </div>
-                <p className="text-sm text-gray-600 flex items-center gap-1.5 mt-0.5">
-                  <span className="flex items-center gap-1 font-medium text-gray-900">
-                    <Avatar className="h-4 w-4">
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>SC</AvatarFallback>
-                    </Avatar>
-                    Sarah Chen (Champion)
-                  </span>
-                  from 
-                  <span className="flex items-center gap-1 font-medium text-gray-900">
-                    Airbnb
-                    <Image src="https://logo.clearbit.com/airbnb.com" alt="Airbnb" width={14} height={14} className="rounded-sm" />
-                  </span>
-                  changed company on linkedin
-                </p>
+                <Button 
+                  variant="outline" 
+                  className="h-8 text-xs font-medium text-gray-600 border-gray-200 hover:bg-gray-100 hover:text-gray-900"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedInsight(`insight-${insight.id}`);
+                  }}
+                >
+                  View Insight
+                </Button>
               </div>
-              <Button variant="outline" className="h-8 text-xs font-medium text-gray-600 border-gray-200 hover:bg-gray-100 hover:text-gray-900">
-                View on LinkedIn
-              </Button>
-            </div>
+            ))}
 
           </div>
         </section>
