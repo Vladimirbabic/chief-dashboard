@@ -659,30 +659,30 @@ function InsightVisual({ type, data }: InsightVisualData) {
                     </defs>
                   </svg>
                   
-                  {/* End point markers - rendered as divs to avoid SVG stretching */}
+                  {/* End point markers with labels - rendered as divs to avoid SVG stretching */}
+                  {/* Green dot with label */}
                   <div 
-                    className="absolute w-2 h-2 rounded-full bg-[#00C29F] -translate-x-1/2 -translate-y-1/2"
+                    className="absolute flex items-center gap-1"
                     style={{ 
                       right: 0, 
                       top: `${(100 - withInfoData[withInfoData.length - 1]) * (chartHeight / 100)}px`,
                       transform: 'translateY(-50%)'
                     }}
-                  />
+                  >
+                    <span className="text-xs font-bold text-[#00C29F]">
+                      {withInfoData[withInfoData.length - 1]}%
+                    </span>
+                    <div className="w-2 h-2 rounded-full bg-[#00C29F]" />
+                  </div>
+                  {/* Salmon dot */}
                   <div 
-                    className="absolute w-2 h-2 rounded-full bg-[#FF9B82] -translate-x-1/2 -translate-y-1/2"
+                    className="absolute w-2 h-2 rounded-full bg-[#FF9B82]"
                     style={{ 
                       right: 0, 
                       top: `${(100 - withoutInfoData[withoutInfoData.length - 1]) * (chartHeight / 100)}px`,
                       transform: 'translateY(-50%)'
                     }}
                   />
-                  
-                  {/* End values */}
-                  <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-between pointer-events-none" style={{ transform: 'translateX(calc(100% + 8px))' }}>
-                    <span className="text-sm font-bold text-[#00C29F]" style={{ marginTop: `${(100 - withInfoData[withInfoData.length - 1]) * 0.8 - 8}px` }}>
-                      {withInfoData[withInfoData.length - 1]}%
-                    </span>
-                  </div>
                 </div>
               </div>
               
