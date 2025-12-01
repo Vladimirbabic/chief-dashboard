@@ -1004,26 +1004,26 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
   };
 
   return (
-    <div className="h-full w-full overflow-hidden bg-[#F2F6F7] flex flex-col relative p-2">
+    <div className="h-full w-full overflow-hidden bg-[#F2F6F7] flex p-2 gap-2">
       {/* Main Container - White background with rounded corners */}
-      <div className={`flex-1 flex flex-col overflow-hidden ${isSingleView ? 'bg-white rounded-xl border border-[#E6EBEC]' : ''}`}>
+      <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${isSingleView ? 'bg-white rounded-xl border border-[#E6EBEC]' : ''}`}>
         {/* Header */}
-        <div className={`${isSingleView ? '' : 'bg-white'} border-b border-[#E6EBEC] px-6 py-4 flex items-center gap-4 shrink-0 ${isSingleView ? 'rounded-t-xl' : ''}`}>
+        <div className={`${isSingleView ? '' : 'bg-white'} border-b border-[#E6EBEC] px-4 py-3 flex items-center gap-3 shrink-0 ${isSingleView ? 'rounded-t-xl' : ''}`}>
           {onBack && (
             <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full hover:bg-gray-100 border border-gray-200">
               <ChevronLeft className="h-4 w-4 text-gray-600" />
             </Button>
           )}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             {isSingleView ? (
-              <h1 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <h1 className={`text-base font-semibold text-gray-900 flex items-center gap-2 ${showMeetingPanel ? 'text-sm' : ''}`}>
                 <span className={activeInsight.typeColor}>{activeInsight.type}</span>
                 <span className="text-gray-300">•</span>
-                <span>{activeInsight.company} ({activeInsight.value})</span>
+                <span className="truncate">{activeInsight.company} ({activeInsight.value})</span>
               </h1>
             ) : (
               <>
-                <h1 className="text-xl font-semibold text-gray-900">Insights Inbox</h1>
+                <h1 className="text-lg font-semibold text-gray-900">Insights Inbox</h1>
                 <p className="text-sm text-gray-500">7 insights requiring your attention</p>
               </>
             )}
@@ -1031,42 +1031,42 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
         </div>
         
         {/* Content */}
-        <div className={`flex-1 overflow-y-auto ${isSingleView ? 'p-6 pb-28 bg-white' : 'p-6 pb-24'}`}>
-          <div className="max-w-3xl mx-auto space-y-4">
+        <div className={`flex-1 overflow-y-auto relative ${isSingleView ? 'p-4 pb-24 bg-white' : 'p-4 pb-20'}`}>
+          <div className={`mx-auto space-y-4 ${showMeetingPanel ? 'max-w-none' : 'max-w-3xl'}`}>
             {displayInsights.map(insight => (
-              <div key={insight.id} className={isSingleView ? "" : "bg-white rounded-2xl border border-[#E6EBEC] shadow-sm overflow-hidden p-6"}>
+              <div key={insight.id} className={isSingleView ? "" : "bg-white rounded-2xl border border-[#E6EBEC] shadow-sm overflow-hidden p-4"}>
                  <InsightCard insight={insight} onMeetingClick={() => setShowMeetingPanel(true)} />
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Bottom Input - Sticky */}
-        {isSingleView && !isChatOpen && (
-          <div className="absolute bottom-2 left-2 right-2 px-6 py-4 bg-gradient-to-t from-white via-white to-transparent z-10 rounded-b-xl">
-            <div className="max-w-3xl mx-auto">
-              <div className="flex gap-4">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>ME</AvatarFallback>
-                </Avatar>
-                <div className="flex-1 rounded-xl border border-[#E6EBEC] p-3 bg-white shadow-sm">
-                  <div className="mb-1 text-xs font-medium text-gray-500">
-                    Reply to: <span className="text-gray-900">Chief</span>
+          {/* Bottom Input - Sticky */}
+          {isSingleView && !isChatOpen && (
+            <div className="absolute bottom-0 left-0 right-0 px-4 py-3 bg-gradient-to-t from-white via-white to-transparent z-10">
+              <div className={`mx-auto ${showMeetingPanel ? 'max-w-none' : 'max-w-3xl'}`}>
+                <div className="flex gap-3">
+                  <Avatar className="h-9 w-9 shrink-0">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>ME</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 rounded-xl border border-[#E6EBEC] p-2.5 bg-white shadow-sm">
+                    <div className="mb-1 text-xs font-medium text-gray-500">
+                      Reply to: <span className="text-gray-900">Chief</span>
+                    </div>
+                    <input 
+                      type="text" 
+                      placeholder="Send message to chief." 
+                      className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
+                      value={chatMessage}
+                      onChange={(e) => setChatMessage(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                    />
                   </div>
-                  <input 
-                    type="text" 
-                    placeholder="Send message to chief." 
-                    className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
-                    value={chatMessage}
-                    onChange={(e) => setChatMessage(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                  />
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Chat Popup */}
         {isSingleView && (
@@ -1083,26 +1083,14 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
         )}
       </div>
 
-      {/* Meeting Summary Slide-in Panel */}
-      <div 
-        className={`absolute top-0 right-0 h-full w-[500px] bg-white border-l border-[#E6EBEC] shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
-          showMeetingPanel ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        {showMeetingPanel && (
+      {/* Meeting Summary Panel - Side by side */}
+      {showMeetingPanel && (
+        <div className="w-[480px] shrink-0 h-full bg-white rounded-xl border border-[#E6EBEC] overflow-hidden animate-in slide-in-from-right-4 duration-300">
           <ProposalReviewSummary 
             onBack={() => setShowMeetingPanel(false)} 
             isPanel={true}
           />
-        )}
-      </div>
-
-      {/* Backdrop overlay when panel is open */}
-      {showMeetingPanel && (
-        <div 
-          className="absolute inset-0 bg-black/20 z-40 transition-opacity duration-300"
-          onClick={() => setShowMeetingPanel(false)}
-        />
+        </div>
       )}
     </div>
   );
