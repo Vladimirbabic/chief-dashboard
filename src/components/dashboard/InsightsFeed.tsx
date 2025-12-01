@@ -965,70 +965,67 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
   const isSingleView = !!insightId && activeInsight;
 
   return (
-    <div className="h-full w-full overflow-hidden bg-[#F2F6F7] flex flex-col relative">
-      {/* Header */}
-      <div className="bg-white border-b border-[#E6EBEC] px-6 py-4 flex items-center gap-4 shrink-0">
-        {onBack && (
-          <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full hover:bg-gray-100 border border-gray-200">
-            <ChevronLeft className="h-4 w-4 text-gray-600" />
-          </Button>
-        )}
-        <div className="flex-1">
-          {isSingleView ? (
-            <h1 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <span className={activeInsight.typeColor}>{activeInsight.type}</span>
-              <span className="text-gray-300">•</span>
-              <span>{activeInsight.company} ({activeInsight.value})</span>
-            </h1>
-          ) : (
-            <>
-              <h1 className="text-xl font-semibold text-gray-900">Insights Inbox</h1>
-              <p className="text-sm text-gray-500">7 insights requiring your attention</p>
-            </>
+    <div className="h-full w-full overflow-hidden bg-[#F2F6F7] flex flex-col relative p-2">
+      {/* Main Container - White background with rounded corners */}
+      <div className={`flex-1 flex flex-col overflow-hidden ${isSingleView ? 'bg-white rounded-xl border border-[#E6EBEC]' : ''}`}>
+        {/* Header */}
+        <div className={`${isSingleView ? '' : 'bg-white'} border-b border-[#E6EBEC] px-6 py-4 flex items-center gap-4 shrink-0 ${isSingleView ? 'rounded-t-xl' : ''}`}>
+          {onBack && (
+            <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full hover:bg-gray-100 border border-gray-200">
+              <ChevronLeft className="h-4 w-4 text-gray-600" />
+            </Button>
           )}
-        </div>
-      </div>
-      
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6 pb-24">
-        <div className="max-w-3xl mx-auto space-y-4">
-          {displayInsights.map(insight => (
-            <div key={insight.id} className={isSingleView ? "" : "bg-white rounded-2xl border border-[#E6EBEC] shadow-sm overflow-hidden p-6"}>
-               <InsightCard insight={insight} />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom Input - Sticky */}
-      {isSingleView && (
-        <div className="absolute bottom-0 left-0 w-full px-8 py-4 bg-gradient-to-t from-white via-white to-transparent z-10">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex gap-4">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>ME</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 rounded-xl border border-[#E6EBEC] p-3 bg-white shadow-sm">
-                <div className="mb-1 text-xs font-medium text-gray-500">
-                  Ask: <span className="text-gray-900">Chief</span>
-                </div>
-                <input 
-                  type="text" 
-                  placeholder="Ask Chief about this insight..." 
-                  className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
-                />
-              </div>
-            </div>
-            <div className="mt-2 text-center">
-              <p className="text-[10px] text-gray-400 flex items-center justify-center gap-1">
-                <Sparkles className="h-2.5 w-2.5" />
-                Chief pulled most recent data at 1:23 am Yesterday.
-              </p>
-            </div>
+          <div className="flex-1">
+            {isSingleView ? (
+              <h1 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <span className={activeInsight.typeColor}>{activeInsight.type}</span>
+                <span className="text-gray-300">•</span>
+                <span>{activeInsight.company} ({activeInsight.value})</span>
+              </h1>
+            ) : (
+              <>
+                <h1 className="text-xl font-semibold text-gray-900">Insights Inbox</h1>
+                <p className="text-sm text-gray-500">7 insights requiring your attention</p>
+              </>
+            )}
           </div>
         </div>
-      )}
+        
+        {/* Content */}
+        <div className={`flex-1 overflow-y-auto ${isSingleView ? 'p-6 pb-28 bg-white' : 'p-6 pb-24'}`}>
+          <div className="max-w-3xl mx-auto space-y-4">
+            {displayInsights.map(insight => (
+              <div key={insight.id} className={isSingleView ? "" : "bg-white rounded-2xl border border-[#E6EBEC] shadow-sm overflow-hidden p-6"}>
+                 <InsightCard insight={insight} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom Input - Sticky */}
+        {isSingleView && (
+          <div className="absolute bottom-2 left-2 right-2 px-6 py-4 bg-gradient-to-t from-white via-white to-transparent z-10 rounded-b-xl">
+            <div className="max-w-3xl mx-auto">
+              <div className="flex gap-4">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>ME</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 rounded-xl border border-[#E6EBEC] p-3 bg-white shadow-sm">
+                  <div className="mb-1 text-xs font-medium text-gray-500">
+                    Reply to: <span className="text-gray-900">Chief</span>
+                  </div>
+                  <input 
+                    type="text" 
+                    placeholder="Send message to chief." 
+                    className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
