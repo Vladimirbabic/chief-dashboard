@@ -18,6 +18,7 @@ import {
   Sparkles
 } from "lucide-react";
 import Image from "next/image";
+import { ChiefChatPopup } from "./ChiefChatPopup";
 
 interface InsightsFeedProps {
   onBack?: () => void;
@@ -970,6 +971,10 @@ function InsightCard({ insight }: { insight: InsightData }) {
 }
 
 export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
+  const [chatMessage, setChatMessage] = useState("");
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [initialChatMessage, setInitialChatMessage] = useState("");
+
   // Filter insights if insightId is provided
   const displayInsights = insightId 
     ? insights.filter(i => i.id === insightId)
@@ -977,6 +982,20 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
 
   const activeInsight = displayInsights[0];
   const isSingleView = !!insightId && activeInsight;
+
+  const handleSendMessage = () => {
+    if (!chatMessage.trim()) return;
+    setInitialChatMessage(chatMessage);
+    setIsChatOpen(true);
+    setChatMessage("");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
 
   return (
     <div className="h-full w-full overflow-hidden bg-[#F2F6F7] flex flex-col relative p-2">
@@ -1017,7 +1036,7 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
         </div>
 
         {/* Bottom Input - Sticky */}
-        {isSingleView && (
+        {isSingleView && !isChatOpen && (
           <div className="absolute bottom-2 left-2 right-2 px-6 py-4 bg-gradient-to-t from-white via-white to-transparent z-10 rounded-b-xl">
             <div className="max-w-3xl mx-auto">
               <div className="flex gap-4">
@@ -1033,11 +1052,28 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
                     type="text" 
                     placeholder="Send message to chief." 
                     className="w-full bg-transparent outline-none placeholder:text-gray-400 text-sm"
+                    value={chatMessage}
+                    onChange={(e) => setChatMessage(e.target.value)}
+                    onKeyDown={handleKeyDown}
                   />
                 </div>
               </div>
             </div>
           </div>
+        )}
+
+        {/* Chat Popup */}
+        {isSingleView && (
+          <ChiefChatPopup
+            isOpen={isChatOpen}
+            onClose={() => setIsChatOpen(false)}
+            onViewFullChat={() => {
+              setIsChatOpen(false);
+              // Could navigate to full chat view here if needed
+            }}
+            initialMessage={initialChatMessage}
+            contextTitle={activeInsight ? `${activeInsight.type} - ${activeInsight.company}` : "this insight"}
+          />
         )}
       </div>
     </div>
