@@ -67,12 +67,12 @@ export default function DashboardPage() {
       return <PreMeetingPrep onBack={() => setSelectedInsight(null)} onChatStart={(msg) => handleChatStart('prep', msg)} />;
     }
     if (selectedInsight === 'insights-feed') {
-      return <InsightsFeed onBack={() => setSelectedInsight(null)} />;
+      return <InsightsFeed onBack={() => setSelectedInsight(null)} onMeetingClick={() => setSelectedInsight('meeting')} />;
     }
     
     if (selectedInsight?.startsWith('insight-')) {
       const insightId = selectedInsight.replace('insight-', '');
-      return <InsightsFeed onBack={() => setSelectedInsight(null)} insightId={insightId} />;
+      return <InsightsFeed onBack={() => setSelectedInsight(null)} insightId={insightId} onMeetingClick={() => setSelectedInsight('meeting')} />;
     }
     
     return (

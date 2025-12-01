@@ -23,6 +23,7 @@ import { ChiefChatPopup } from "./ChiefChatPopup";
 interface InsightsFeedProps {
   onBack?: () => void;
   insightId?: string;
+  onMeetingClick?: () => void;
 }
 
 export interface InsightVisualData {
@@ -268,7 +269,7 @@ export const insights: InsightData[] = [
   }
 ];
 
-function InsightVisual({ type, data }: InsightVisualData) {
+function InsightVisual({ type, data, onMeetingClick }: InsightVisualData & { onMeetingClick?: () => void }) {
   switch (type) {
     case 'comparison':
       // Touch Timeline with circles representing intensity
@@ -311,16 +312,18 @@ function InsightVisual({ type, data }: InsightVisualData) {
                       const size = Math.max(16, touch.intensity * 48);
                       const color = touch.type === 'meeting' ? 'bg-[#FF9B82]' : 'bg-[#8B5CF6]';
                       const offset = touchIdx * 8 - (week.touches.length - 1) * 4;
+                      const isMeeting = touch.type === 'meeting';
                       return (
                         <div
                           key={touchIdx}
-                          className={`absolute rounded-full ${color} opacity-70 hover:opacity-100 transition-opacity cursor-pointer`}
+                          className={`absolute rounded-full ${color} opacity-70 hover:opacity-100 transition-all cursor-pointer ${isMeeting ? 'hover:ring-2 hover:ring-[#FF9B82]/50 hover:scale-110' : ''}`}
                           style={{
                             width: `${size}px`,
                             height: `${size}px`,
                             transform: `translateX(${offset}px)`,
                           }}
-                          title={`${touch.type}: ${Math.round(touch.intensity * 100)}% intensity`}
+                          title={isMeeting ? 'Click to view meeting summary' : `${touch.type}: ${Math.round(touch.intensity * 100)}% intensity`}
+                          onClick={isMeeting && onMeetingClick ? onMeetingClick : undefined}
                         />
                       );
                     })
@@ -479,16 +482,18 @@ function InsightVisual({ type, data }: InsightVisualData) {
                       const size = Math.max(16, touch.intensity * 48);
                       const color = touch.type === 'meeting' ? 'bg-[#FF9B82]' : 'bg-[#8B5CF6]';
                       const offset = touchIdx * 8 - (week.touches.length - 1) * 4;
+                      const isMeeting = touch.type === 'meeting';
                       return (
                         <div
                           key={touchIdx}
-                          className={`absolute rounded-full ${color} opacity-70 hover:opacity-100 transition-opacity cursor-pointer`}
+                          className={`absolute rounded-full ${color} opacity-70 hover:opacity-100 transition-all cursor-pointer ${isMeeting ? 'hover:ring-2 hover:ring-[#FF9B82]/50 hover:scale-110' : ''}`}
                           style={{
                             width: `${size}px`,
                             height: `${size}px`,
                             transform: `translateX(${offset}px)`,
                           }}
-                          title={`${touch.type}: ${Math.round(touch.intensity * 100)}% intensity`}
+                          title={isMeeting ? 'Click to view meeting summary' : `${touch.type}: ${Math.round(touch.intensity * 100)}% intensity`}
+                          onClick={isMeeting && onMeetingClick ? onMeetingClick : undefined}
                         />
                       );
                     })
@@ -721,7 +726,7 @@ function InsightVisual({ type, data }: InsightVisualData) {
   }
 }
 
-function InsightCard({ insight }: { insight: InsightData }) {
+function InsightCard({ insight, onMeetingClick }: { insight: InsightData; onMeetingClick?: () => void }) {
   const renderActionContent = () => {
     switch (insight.action.type) {
       case 'hubspot-task':
@@ -937,7 +942,7 @@ function InsightCard({ insight }: { insight: InsightData }) {
             {/* Visual Chart */}
             {insight.visual && (
               <div className="w-full">
-                 <InsightVisual type={insight.visual.type} data={insight.visual.data} />
+                 <InsightVisual type={insight.visual.type} data={insight.visual.data} onMeetingClick={onMeetingClick} />
               </div>
             )}
           </div>
@@ -970,7 +975,7 @@ function InsightCard({ insight }: { insight: InsightData }) {
   );
 }
 
-export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
+export function InsightsFeed({ onBack, insightId, onMeetingClick }: InsightsFeedProps) {
   const [chatMessage, setChatMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [initialChatMessage, setInitialChatMessage] = useState("");
@@ -1029,7 +1034,7 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
           <div className="max-w-3xl mx-auto space-y-4">
             {displayInsights.map(insight => (
               <div key={insight.id} className={isSingleView ? "" : "bg-white rounded-2xl border border-[#E6EBEC] shadow-sm overflow-hidden p-6"}>
-                 <InsightCard insight={insight} />
+                 <InsightCard insight={insight} onMeetingClick={onMeetingClick} />
               </div>
             ))}
           </div>
