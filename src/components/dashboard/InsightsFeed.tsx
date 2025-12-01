@@ -1006,7 +1006,7 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
   return (
     <div className="h-full w-full overflow-hidden bg-[#F2F6F7] flex p-2 gap-2">
       {/* Main Container - White background with rounded corners */}
-      <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${isSingleView ? 'bg-white rounded-xl border border-[#E6EBEC]' : ''}`}>
+      <div className={`flex flex-col overflow-hidden transition-all duration-300 ${showMeetingPanel ? 'w-[65%]' : 'flex-1'} ${isSingleView ? 'bg-white rounded-xl border border-[#E6EBEC]' : ''}`}>
         {/* Header */}
         <div className={`${isSingleView ? '' : 'bg-white'} border-b border-[#E6EBEC] px-4 py-3 flex items-center gap-3 shrink-0 ${isSingleView ? 'rounded-t-xl' : ''}`}>
           {onBack && (
@@ -1083,9 +1083,9 @@ export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
         )}
       </div>
 
-      {/* Meeting Summary Panel - Side by side */}
+      {/* Meeting Summary Panel - Side by side 35% */}
       {showMeetingPanel && (
-        <div className="w-[480px] shrink-0 h-full bg-white rounded-xl border border-[#E6EBEC] overflow-hidden animate-in slide-in-from-right-4 duration-300">
+        <div className="w-[35%] shrink-0 h-full bg-white rounded-xl border border-[#E6EBEC] overflow-hidden animate-in slide-in-from-right-4 duration-300">
           <ProposalReviewSummary 
             onBack={() => setShowMeetingPanel(false)} 
             isPanel={true}
