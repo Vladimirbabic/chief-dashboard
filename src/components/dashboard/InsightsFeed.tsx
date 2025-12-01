@@ -19,11 +19,11 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { ChiefChatPopup } from "./ChiefChatPopup";
+import { MeetingSummary } from "./MeetingSummary";
 
 interface InsightsFeedProps {
   onBack?: () => void;
   insightId?: string;
-  onMeetingClick?: () => void;
 }
 
 export interface InsightVisualData {
@@ -975,10 +975,11 @@ function InsightCard({ insight, onMeetingClick }: { insight: InsightData; onMeet
   );
 }
 
-export function InsightsFeed({ onBack, insightId, onMeetingClick }: InsightsFeedProps) {
+export function InsightsFeed({ onBack, insightId }: InsightsFeedProps) {
   const [chatMessage, setChatMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [initialChatMessage, setInitialChatMessage] = useState("");
+  const [showMeetingPanel, setShowMeetingPanel] = useState(false);
 
   // Filter insights if insightId is provided
   const displayInsights = insightId 
@@ -1034,7 +1035,7 @@ export function InsightsFeed({ onBack, insightId, onMeetingClick }: InsightsFeed
           <div className="max-w-3xl mx-auto space-y-4">
             {displayInsights.map(insight => (
               <div key={insight.id} className={isSingleView ? "" : "bg-white rounded-2xl border border-[#E6EBEC] shadow-sm overflow-hidden p-6"}>
-                 <InsightCard insight={insight} onMeetingClick={onMeetingClick} />
+                 <InsightCard insight={insight} onMeetingClick={() => setShowMeetingPanel(true)} />
               </div>
             ))}
           </div>
@@ -1081,6 +1082,28 @@ export function InsightsFeed({ onBack, insightId, onMeetingClick }: InsightsFeed
           />
         )}
       </div>
+
+      {/* Meeting Summary Slide-in Panel */}
+      <div 
+        className={`absolute top-0 right-0 h-full w-[500px] bg-white border-l border-[#E6EBEC] shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
+          showMeetingPanel ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        {showMeetingPanel && (
+          <MeetingSummary 
+            onBack={() => setShowMeetingPanel(false)} 
+            isPanel={true}
+          />
+        )}
+      </div>
+
+      {/* Backdrop overlay when panel is open */}
+      {showMeetingPanel && (
+        <div 
+          className="absolute inset-0 bg-black/20 z-40 transition-opacity duration-300"
+          onClick={() => setShowMeetingPanel(false)}
+        />
+      )}
     </div>
   );
 }
